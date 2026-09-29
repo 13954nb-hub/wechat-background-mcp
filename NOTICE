@@ -1,0 +1,12 @@
+WeChat Background MCP
+Copyright 2026 WeChat Background MCP contributors
+
+This project is licensed under Apache License 2.0. See LICENSE.
+
+The read-only local database component contains work derived from
+wechatauto. Its attribution and the scope of those changes are recorded in
+THIRD_PARTY_READSTORE.md. The upstream Apache 2.0 license is retained in
+licenses/wechatauto-Apache-2.0.txt.
+
+WeChat, Weixin, and Tencent are trademarks of their respective owners.
+This project is independent and is not endorsed by Tencent.

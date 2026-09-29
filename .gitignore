@@ -1,0 +1,36 @@
+# Local environments and generated Python artifacts
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Native build output
+native-src/.zig-cache/
+native-src/zig-out/
+native-src/build-verification*.json
+*.bak
+
+# Local state, diagnostics, and conversation exports
+.env
+*.db
+*.sqlite*
+*.jsonl
+*.log
+*acceptance*.json
+*acceptance*.md
+state/
+diagnostics/
+
+# Local acceptance harnesses are not part of the public distribution
+tools/
+scripts/
+tests/test_accept_batch_read.py
+
+# Editor and OS files
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini

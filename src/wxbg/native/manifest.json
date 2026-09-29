@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "protocol_version": 4,
+  "request_struct_size": 736,
+  "architecture": "x86_64-windows",
+  "binary": {
+    "path": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8/wxbg_attachment.dll",
+    "sha256": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8",
+    "size_bytes": 523264
+  },
+  "client": {
+    "product": "Weixin",
+    "version": "4.1.13.12",
+    "architecture": "x64",
+    "module": "Weixin.dll",
+    "sha256": "e3240bf8a4d00593a4b3e6ce6c8b6ac26897622c27f410f6655c4eee17cb3b6d",
+    "image_size": "0xbc2e000",
+    "cocreateinstance_delay_iat_rva": "0xb4b6ae0",
+    "code_signature_rva": "0x82a4e2",
+    "code_signature_checked_hex": "4885c90f8455060000803d76f14e0a000f844806",
+    "full_hash_verification_required_in_controller": true
+  },
+  "source_bundle": "../../../native-src",
+  "files": {
+    "attachment_bridge.cpp": {
+      "category": "implementation",
+      "sha256": "ef7ce4f37f25c4e5dd2cea27cd1a30c4f8c8808dbdd2e2b6ef051b4c1df22376",
+      "size_bytes": 15397
+    },
+    "file_dialog_proxy.cpp": {
+      "category": "implementation",
+      "sha256": "e302ce4ba26c7349418d5acdba83c5fbca7b9248462fb99442c45caad3c851f4",
+      "size_bytes": 18570
+    },
+    "iat_lease.cpp": {
+      "category": "implementation",
+      "sha256": "d737eaa369c2050945c601907d720e5f1103afed0ecde1e245e3a5bc9c580b51",
+      "size_bytes": 5968
+    },
+    "fixture_grant.cpp": {
+      "category": "implementation",
+      "sha256": "b3473de991acf2214c926e3b373d01bf0c5bf013060833027c98304c40dbeb5e",
+      "size_bytes": 5691
+    },
+    "file_dialog_proxy.h": {
+      "category": "header",
+      "sha256": "9c34349931bbf63ee143171e1b7a60f04413b8aba64058951ebec2a7d9bd869c",
+      "size_bytes": 4056
+    },
+    "iat_lease.h": {
+      "category": "header",
+      "sha256": "0d8baf87d2c8d430b0d7fb90cdd7761365e02ebdeb9b1dfa057c7bbec5851bf1",
+      "size_bytes": 3049
+    },
+    "fixture_grant.h": {
+      "category": "header",
+      "sha256": "9a5d7a3aedb7a997baa0e85512931d7309afa16164ec8a2bb9fc332a4e20ccb3",
+      "size_bytes": 1239
+    },
+    "attachment_bridge_test.cpp": {
+      "category": "test",
+      "sha256": "e62c1c51f8417b957022e7ea504a7ce61da6baa1e62af66f4b0715af6988296b",
+      "size_bytes": 5108
+    },
+    "file_dialog_proxy_test.cpp": {
+      "category": "test",
+      "sha256": "59af78a4bfabf20a970f38d169bcb395c1ba8a358aa2b5cbe23399b974652bec",
+      "size_bytes": 29211
+    },
+    "iat_lease_test.cpp": {
+      "category": "test",
+      "sha256": "db2b330af9327a21d3e436dee34040dab4e80a7131af44f9dd7b0400400129ad",
+      "size_bytes": 14659
+    },
+    "fixture_grant_test.cpp": {
+      "category": "test",
+      "sha256": "f3fc15ead468f0474ab8efbe43a628c12f5b0d08e656f49969dbd4e6ceed3f8f",
+      "size_bytes": 9980
+    },
+    "attachment_fixture.cpp": {
+      "category": "fixture",
+      "sha256": "b356ae40f97d9f86f9a075c9f0aac5334a48bb6a09d21f2802bfb9813b45a6b0",
+      "size_bytes": 3481
+    },
+    "iat_fixture.cpp": {
+      "category": "fixture",
+      "sha256": "b7b943ae89fc11331987a3664e483797c63f033e7cf9135394a5982fabcfdec1",
+      "size_bytes": 398
+    }
+  },
+  "build": {
+    "compiler": "Zig",
+    "version": "0.16.0",
+    "target": "x86_64-windows-gnu",
+    "entrypoint": "native-src/build.py",
+    "implementation_order": [
+      "attachment_bridge.cpp",
+      "file_dialog_proxy.cpp",
+      "iat_lease.cpp",
+      "fixture_grant.cpp"
+    ],
+    "implementation_hashes_match_original_build_receipt": false,
+    "original_receipt_sha256": "e65d81f959436205a20664f35e6362edea982d068b987bde85ef9d32a7656a41",
+    "historical_receipt_included_header_hashes": false,
+    "packaged_headers_verified_against_available_test_receipts": [
+      "file_dialog_proxy.h",
+      "iat_lease.h"
+    ],
+    "packaged_headers_hashed_at_packaging": true,
+    "bit_identical_rebuild_not_assumed": true,
+    "entrypoint_sha256": "4a78079429466556c5285d6b428f8d76a28e3e996689f4e2fa9bde7e1b0dfbde"
+  },
+  "verified_scope": {
+    "current_pinned_v4": {
+      "binary_sha256": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8",
+      "compiler": "Zig 0.16.0",
+      "compile_success": true,
+      "owned_bridge_lifecycle_passed": false,
+      "client_live_submission_verified": false,
+      "scope": "Static package integrity and compiler success only. No native lifecycle tests or live Weixin submission were run for v4. The controller measures the semantic attachment button; the bridge independently validates the current render-client geometry before posting."
+    },
+    "historical_v3": {
+      "binary_sha256": "c8d533d12c6b6d677f6b6ca2b6c8e643f6e8662bad21ed5fd26afe567125c99a",
+      "owned_bridge_lifecycle_checks": 40,
+      "owned_bridge_lifecycle_passed": true,
+      "owned_file_dialog_proxy_cases": 40,
+      "owned_iat_lease_normal_tests": 8,
+      "owned_iat_lease_fault_tests": 12,
+      "owned_fixture_grant_tests": 8,
+      "python_file_path_tests": 87,
+      "client_live_submission_verified": false,
+      "scope": "Historical v3 owned offline tests and Python file-path checks only. Its fixed attachment coordinates do not apply to the v4 binary; no v3 result verifies v4."
+    }
+  },
+  "lifecycle": {
+    "resident_after_first_iat_lease": true,
+    "unload_authorized_by_restore": false,
+    "positive_grants_revocable": true,
+    "controller_must_serialize_and_guard_context": true
+  },
+  "fixture_limits": {
+    "maximum_size_bytes": 1048576,
+    "path_capacity_wchar_including_nul": 260
+  },
+  "excluded": [
+    "payments",
+    "red_packets",
+    "transfers",
+    "payment_collection",
+    "arbitrary_remote_execution",
+    "general_WeChat_feature_support"
+  ],
+  "limitations": [
+    "No complete or remote-delivered upload was established by the recorded live evidence.",
+    "The native DLL performs image size and code signature checks; the controller must independently enforce the exact client SHA-256.",
+    "Restoring IAT state is not permission to unload the intentionally resident module.",
+    "Historical production build receipt and live submission apply to an earlier binary only. The v4 rebuilt binary has no live submission or remote receipt evidence.",
+    "The current Weixin process may still have an earlier DLL resident; a new path and manifest do not replace an already loaded module."
+  ]
+}

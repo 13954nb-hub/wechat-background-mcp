@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wechat-background-mcp"
+version = "2.5.2"
+readme = "README.md"
+license = "Apache-2.0"
+description = "Version-pinned background MCP adapter for an existing Windows Weixin client"
+requires-python = ">=3.12,<3.13"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Win32 (MS Windows)",
+  "Operating System :: Microsoft :: Windows :: Windows 10",
+  "Operating System :: Microsoft :: Windows :: Windows 11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = ["mcp==1.27.2", "pywinauto==0.6.9", "comtypes==1.4.16", "pywin32==312", "psutil==7.2.2", "pydantic==2.13.5", "cryptography==50.0.1", "zstandard==0.25.0", "Pillow==12.3.0"]
+
+[project.optional-dependencies]
+images = ["Pillow==12.3.0"]
+
+[project.urls]
+Repository = "https://github.com/13954nb-hub/wechat-background-mcp"
+Issues = "https://github.com/13954nb-hub/wechat-background-mcp/issues"
+
+[project.scripts]
+wechat-background-mcp = "wxbg.gateway:main"
+wechat-prepare-image = "wxbg.image_prepare:main"
+wechat-mcp-configure = "wxbg.configure:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools]
+include-package-data = false
+license-files = ["LICENSE", "NOTICE", "licenses/*.txt", "THIRD_PARTY_READSTORE.md"]
+
+[tool.setuptools.package-data]
+wxbg = ["FIRST_USE_ZH.md", "native/07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8/wxbg_attachment.dll", "native/manifest.json"]
