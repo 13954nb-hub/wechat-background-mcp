@@ -2,7 +2,7 @@
 from pathlib import Path
 from .policy import AdapterError
 
-NATIVE_SHA256 = '07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8'
+NATIVE_SHA256 = 'da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594'
 SUPPORTED_FILE_EXTENSIONS = ('.txt', '.pdf', '.zip')
 
 

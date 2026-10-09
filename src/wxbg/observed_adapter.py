@@ -116,7 +116,7 @@ class Observation:
         for message in self.messages:
             lines = message.name.splitlines()
             if (message.kind != 'mmui::ChatBubbleItemView' or message.runtime in before
-                    or not lines or lines[0] != '檔案' or filename not in lines[1:]):
+                    or not lines or lines[0] not in ('檔案', '文件') or filename not in lines[1:]):
                 continue
             if message.runtime in seen:
                 raise AdapterError('ambiguous_attachment_card')

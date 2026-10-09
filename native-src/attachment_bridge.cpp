@@ -166,7 +166,8 @@ static BOOL CALLBACK CollectRender(HWND child,LPARAM context) {
     auto *layout=reinterpret_cast<RenderLayout *>(context);
     wchar_t class_name[64]={};
     if (GetClassNameW(child,class_name,64) &&
-        lstrcmpW(class_name,L"MMUIRenderSubWindowHW")==0) {
+        (lstrcmpW(class_name,L"MMUIRenderSubWindowHW")==0 ||
+         lstrcmpW(class_name,L"MMUIRenderSubWindow")==0)) {
         ++layout->count;
         if (layout->count==1) layout->hwnd=child;
     }
@@ -192,8 +193,9 @@ static bool ValidProductionAttachmentLayout(HWND hwnd,uint32_t x,uint32_t y,
     if (!GetClientRect(hwnd,&root_client) || !GetClientRect(layout.hwnd,&render_client) ||
         root_client.left!=0 || root_client.top!=0 ||
         render_client.left!=0 || render_client.top!=0 ||
-        root_client.right!=static_cast<LONG>(width) ||
-        root_client.bottom!=static_cast<LONG>(height) ||
+        (!IsIconic(hwnd) &&
+         (root_client.right!=static_cast<LONG>(width) ||
+          root_client.bottom!=static_cast<LONG>(height))) ||
         render_client.right!=static_cast<LONG>(width) ||
         render_client.bottom!=static_cast<LONG>(height)) return false;
     POINT child_origin{0,0};

@@ -7,11 +7,10 @@ Use the bilingual [29-tool catalog and workflow guide](../TOOLS_AND_WORKFLOWS.md
 
 ## Release and requirements
 
-WeChat Background MCP 2.5.2 is a local, experimental MCP server. The single installable package is a Windows x64 wheel for CPython 3.12 x64:
+WeChat Background MCP 2.6.0 is a local, experimental MCP server. The single installable package is a Windows x64 wheel for CPython 3.12 x64:
 
-- [Download the 2.5.2 wheel](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.5.2/wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl)
-- Size: 554,022 bytes
-- SHA-256: **95df0b182ba67f85664a592acba70a1c6c920e56f8b86cb9466759b4ee278cd7**
+- [Download the 2.6.0 wheel](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.6.0/wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl)
+- SHA-256: [release checksums](https://github.com/13954nb-hub/wechat-background-mcp/releases/tag/v2.6.0)
 
 | Component | Supported value |
 | --- | --- |
@@ -39,11 +38,15 @@ If the installer now provides a newer build, do not patch the MCP fingerprint, s
 
 In PowerShell, download the wheel and check its SHA-256 before installation:
 
-    $url = 'https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.5.2/wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl'
-    Invoke-WebRequest -Uri $url -OutFile .\wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl
+    $url = 'https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.6.0/wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl'
+    Invoke-WebRequest -Uri $url -OutFile .\wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl
 
-    $wheel = Join-Path $PWD 'wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl'
-    $expected = '95df0b182ba67f85664a592acba70a1c6c920e56f8b86cb9466759b4ee278cd7'
+    $wheel = Join-Path $PWD 'wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl'
+    $checksumUrl = 'https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.6.0/SHA256SUMS.txt'
+    $checksumText = (Invoke-WebRequest -Uri $checksumUrl).Content
+    $checksumLine = @($checksumText -split '\r?\n' | Where-Object { $_ -match '^[0-9a-f]{64}  wechat_background_mcp-2\.6\.0-cp312-cp312-win_amd64\.whl$' })
+    if ($checksumLine.Count -ne 1) { throw 'Missing or ambiguous wheel checksum' }
+    $expected = ($checksumLine[0] -split '  ')[0]
     $actual = (Get-FileHash -LiteralPath $wheel -Algorithm SHA256).Hash.ToLowerInvariant()
     if ($actual -ne $expected) { throw "Wheel SHA-256 mismatch: $actual" }
 

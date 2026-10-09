@@ -15,6 +15,7 @@ from .monitor import GUITHREADINFO
 from .observed_adapter import rectangle
 from .policy import AdapterError
 from .window_geometry import main_client_size_matches_or_minimized
+from .render_surface import enumerate_render_surfaces
 
 
 USER32 = ctypes.WinDLL('user32', use_last_error=True)
@@ -49,11 +50,7 @@ def _frame(adapter, geometry, expected=None):
     if USER32.GetAwarenessFromDpiAwarenessContext(
             USER32.GetThreadDpiAwarenessContext()) != 2:
         raise AdapterError('coordinate_context_unverified')
-    renders = []
-    win32gui.EnumChildWindows(adapter.hwnd,
-        lambda hwnd, _: renders.append(hwnd)
-        if win32gui.GetClassName(hwnd) == 'MMUIRenderSubWindowHW' else None,
-        None)
+    renders = enumerate_render_surfaces(adapter.hwnd, win32gui)
     if (len(renders) != 1
             or win32process.GetWindowThreadProcessId(renders[0])[1] != pid
             or not main_client_size_matches_or_minimized(

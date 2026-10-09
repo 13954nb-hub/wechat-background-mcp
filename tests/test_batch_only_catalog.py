@@ -95,7 +95,7 @@ class BatchOnlyCatalogTests(unittest.TestCase):
         metadata = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
         capabilities = gateway.wechat_capabilities()
 
-        self.assertEqual(metadata["project"]["version"], "2.5.2")
+        self.assertEqual(metadata["project"]["version"], "2.6.0")
         self.assertEqual(__version__, metadata["project"]["version"])
         self.assertEqual(capabilities["version"], metadata["project"]["version"])
         self.assertEqual(capabilities.get("batch_messages", {}).get("status"), "released")

@@ -1,4 +1,4 @@
-# Capabilities and boundaries (2.5.2)
+# Capabilities and boundaries (2.6.0)
 ## 简体中文摘要
 
 这是仅供本机使用的实验性 MCP 服务，登记 29 个工具；目录数量不代表所有功能都经过实机端到端验收。仅支持 Windows x64、CPython 3.12 x64，以及完整 DLL 指纹匹配的微信 Windows 4.1.13.12。UI 操作须与微信位于同一交互桌面，并在每次操作时重新检查控件和窗口几何；不要求固定显示器分辨率，也不能复用固定坐标。多会话监听是客户端驱动的有界轮询，每次 1–60 秒、默认检测间隔 5 秒，最多 16 个选定会话；服务端不会常驻监听或自动生成回复。只有发话者身份有充分证据时才标记 self／other；未知方向须暂停。原生 @提及及不支持的附件查看通过 Computer Use 交接，不由 MCP 自行点击或发送。请查看[双语工具目录](docs/TOOLS_AND_WORKFLOWS.md)、[简体中文首次部署](docs/zh-CN/快速开始.md)、[English first deployment](docs/en/GETTING_STARTED.md)和[双语免责声明](DISCLAIMER.md)。

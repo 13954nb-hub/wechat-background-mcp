@@ -224,6 +224,38 @@ class FileActionsTests(unittest.TestCase):
         print(f'FAKE_TREE_WALK_BASELINE happy_path_nodes_calls={self.adapter.nodes_calls}', flush=True)
         self.assertLessEqual(self.adapter.nodes_calls, 15)
 
+    def test_exact_simplified_attachment_and_send_labels(self):
+        self.adapter.attachment._element_info.name = '发送文件'
+        self.adapter.send._element_info.name = '发送'
+        result = self.run_action()
+        self.assertTrue(result['submitted'])
+        self.assertEqual((self.driver.calls, self.adapter.clicks), (1, 1))
+        self.assertFalse(result['remote_receipt_verified'])
+
+    def test_simplified_file_card_is_observed_after_submission(self):
+        def simplified_card(adapter):
+            adapter.text = ''
+            adapter.message_nodes = [Node('mmui::ChatBubbleItemView',
+                '文件\nfixture.txt\n137B', 'simplified-card')]
+        self.adapter.on_click = simplified_card
+        result = self.run_action()
+        self.assertTrue(result['submitted'])
+        self.assertEqual(result['upload_status'], 'unknown')
+        self.assertFalse(result['remote_receipt_verified'])
+
+    def test_unknown_localized_attachment_label_stops_before_selection(self):
+        self.adapter.attachment._element_info.name = '发送文件到其他聊天'
+        with self.assertRaises(AdapterError):
+            self.run_action()
+        self.assertEqual((self.driver.calls, self.adapter.clicks), (0, 0))
+
+    def test_duplicate_localized_attachment_labels_stop_before_selection(self):
+        self.adapter.extra_nodes.append(Node('mmui::XButton', '发送文件',
+            'duplicate-attachment', control='Button', rect=(887, 1920, 957, 1990)))
+        with self.assertRaises(AdapterError):
+            self.run_action()
+        self.assertEqual((self.driver.calls, self.adapter.clicks), (0, 0))
+
     def test_file_send_phase_marks_only_observed_success_milestones(self):
         self.run_action()
         self.assertEqual(getattr(self.adapter, 'file_send_phase', None), {

@@ -4,6 +4,7 @@ This never realizes, scrolls, focuses, clicks, or types. A database key is not
 used as a UI ref. A found item is only a provider witness, not an opened chat.
 """
 from .policy import AdapterError
+from .render_surface import enumerate_render_surfaces
 
 
 ITEM_CONTAINER_PATTERN_ID = 10019
@@ -59,11 +60,7 @@ def _layout(adapter, nodes):
     if hasattr(adapter, 'hwnd'):
         try:
             import win32gui
-            renders = []
-            win32gui.EnumChildWindows(adapter.hwnd,
-                lambda hwnd, _: renders.append(hwnd)
-                if win32gui.GetClassName(hwnd) == 'MMUIRenderSubWindowHW' else None,
-                None)
+            renders = enumerate_render_surfaces(adapter.hwnd, win32gui)
             result['native'] = {
                 'main_client': list(win32gui.GetClientRect(adapter.hwnd)),
                 'main_client_screen_origin': list(win32gui.ClientToScreen(adapter.hwnd, (0, 0))),

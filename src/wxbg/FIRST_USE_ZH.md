@@ -1,15 +1,15 @@
-# 微信背景 MCP 2.5.2：使用前必讀
+# 微信背景 MCP 2.6.0：使用前必讀
 
 本指引隨**同一個 wheel 安裝檔**打包為 `wxbg/FIRST_USE_ZH.md`。安裝前可把 wheel 當 ZIP 開啟閱讀；連接 MCP 後，先取得 `wechat_first_deploy_and_tool_chains` 提示詞，再呼叫 `wechat_capabilities` → `wechat_status`。提示詞只提供操作指引，不會自行安裝、校準或授權發送。伺服器有 29 個工具；使用者取得一個 wheel 即可交給 AI 部署，但客戶電腦仍須具備相容的 Python、依賴套件與微信。
 
 ## 首次部署
 
-1. 核對 Windows x64、獨立 CPython **3.12 x64**、可信的本地 2.5.2 wheel，以及使用者已登入的 Weixin **4.1.13.12**。微信的顯示版本不足以確認相容性；設定器會檢查 `Weixin.dll` 的精確大小、SHA-256 和 PE 佈局。不要自動下載第三方微信、降級客戶端、關閉更新程式或放寬雜湊檢查。
+1. 核對 Windows x64、獨立 CPython **3.12 x64**、可信的本地 2.6.0 wheel，以及使用者已登入的 Weixin **4.1.13.12**。微信的顯示版本不足以確認相容性；設定器會檢查 `Weixin.dll` 的精確大小、SHA-256 和 PE 佈局。不要自動下載第三方微信、降級客戶端、關閉更新程式或放寬雜湊檢查。
 2. 使用客戶電腦上的穩定**絕對路徑**建立專用環境，安裝 wheel。不要沿用開發者的路徑或其他 AI 客戶端附帶的 Python：
 
    ```powershell
    py -3.12 -m venv 'C:\path\to\wechat-mcp-venv'
-   & 'C:\path\to\wechat-mcp-venv\Scripts\python.exe' -m pip install 'C:\trusted\wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl'
+   & 'C:\path\to\wechat-mcp-venv\Scripts\python.exe' -m pip install 'C:\trusted\wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl'
    ```
 
 3. 用這個環境的設定器查找執行中的客戶端，再明確選定使用者的 `Weixin.exe`：

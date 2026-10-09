@@ -13,7 +13,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 NATIVE = HERE.parent / "src" / "wxbg" / "native"
-PINNED_SHA256 = "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8"
+PINNED_SHA256 = "da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594"
 CORE = ["attachment_bridge.cpp", "file_dialog_proxy.cpp", "iat_lease.cpp", "fixture_grant.cpp"]
 FLAGS = ["-target", "x86_64-windows-gnu", "-std=c++17", "-O2", "-Wall", "-Wextra", "-Werror", "-DUNICODE", "-D_UNICODE"]
 LIBRARIES = ["-luser32", "-lkernel32", "-lole32", "-lshell32", "-luuid", "-lpsapi", "-lshlwapi", "-lbcrypt"]
