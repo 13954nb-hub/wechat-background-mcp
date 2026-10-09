@@ -39,6 +39,102 @@ class FileCardParserTests(unittest.TestCase):
             },
         )
 
+    def test_observed_three_line_card_without_status_is_not_completed(self):
+        self.assertEqual(
+            parse_file_card("檔案\nreport.pdf\n70.4K"),
+            {
+                "filename": "report.pdf",
+                "display_size": "70.4K",
+                "transfer_indicator": "no_transfer_indicator",
+                "progress_percent": None,
+                "upload_status": "unknown",
+            },
+        )
+
+    def test_exact_file_labels_and_optional_verified_footers(self):
+        for label in ("檔案", "文件"):
+            for footer in ("", "\n微信电脑版", "\n微信電腦版"):
+                with self.subTest(label=label, footer=footer):
+                    result = parse_file_card(f"{label}\nreport.pdf\n70.4K{footer}")
+                    self.assertEqual(result["filename"], "report.pdf")
+                    self.assertEqual(result["display_size"], "70.4K")
+                    self.assertEqual(result["transfer_indicator"], "no_transfer_indicator")
+                    self.assertEqual(result["upload_status"], "unknown")
+                    self.assertIsNone(result["progress_percent"])
+
+    def test_optional_footer_grammar_preserves_crlf_and_cr_normalisation(self):
+        for separator in ("\r\n", "\r"):
+            for footer in ([], ["微信电脑版"], ["微信電腦版"]):
+                with self.subTest(separator=separator, footer=footer):
+                    text = separator.join(["檔案", "report.pdf", "70.4K", *footer])
+                    result = parse_file_card(text)
+                    self.assertEqual(result["display_size"], "70.4K")
+                    self.assertEqual(result["upload_status"], "unknown")
+
+    def test_footerless_progress_and_status_preserve_existing_semantics(self):
+        cases = (
+            ("進度: 23%\n", "", "uploading", "uploading", 23),
+            ("进度 : 100 %\n", "", "uploading", "uploading", 100),
+            ("進度: 0%\n", "\n傳送中斷", "interrupted", "interrupted", 0),
+            ("", "\n发送失败", "failed", "failed", None),
+            ("", "\n正在上傳", "uploading", "uploading", None),
+            ("", "\n上传完成", "completed_label", "completed", None),
+            ("進度: 100%\n", "\n傳送成功", "completed_label", "completed", 100),
+            ("进度: 12%\n", "\n上传完成", "unknown", "unknown", 12),
+            ("進度: 48%\n", "\n服务器处理中", "unknown", "unknown", 48),
+        )
+        for progress, status, indicator, upload_status, percent in cases:
+            with self.subTest(progress=progress, status=status):
+                result = parse_file_card(f"檔案\n{progress}report.pdf\n70.4K{status}")
+                self.assertEqual(result["transfer_indicator"], indicator)
+                self.assertEqual(result["upload_status"], upload_status)
+                self.assertEqual(result["progress_percent"], percent)
+                self.assertNotIn("服务器处理中", result.values())
+
+    def test_unknown_footer_like_line_is_status_not_ignored(self):
+        result = parse_file_card("檔案\nreport.pdf\n70.4K\nWeChat PC")
+        self.assertEqual(result["transfer_indicator"], "unknown")
+        self.assertEqual(result["upload_status"], "unknown")
+        self.assertIsNone(result["progress_percent"])
+        self.assertNotIn("WeChat PC", result.values())
+
+    def test_optional_footer_grammar_retains_bounded_malformed_rejections(self):
+        malformed = (
+            "檔案\nreport.pdf",
+            "File\nreport.pdf\n70.4K",
+            "档案\nreport.pdf\n70.4K",
+            " 文件\nreport.pdf\n70.4K",
+            "檔案\n\n70.4K",
+            "檔案\n   \n70.4K",
+            "檔案\nreport\t.pdf\n70.4K",
+            "檔案\nreport.pdf\n",
+            "檔案\nreport.pdf\n70.4K\n",
+            "檔案\nreport.pdf\n70.4K\n   ",
+            "檔案\nreport.pdf\n70.4K\n上传完成\nWeChat PC",
+            "檔案\nreport.pdf\n70.4K\n上传完成\n微信电脑版 ",
+            "檔案\nreport.pdf\n70.4K\n上传完成\n微信电脑版\n微信電腦版",
+            "檔案\nreport.pdf\n70.4K\n多余行\n另一行",
+            "檔案\n進度: 20%\n進度: 30%\nreport.pdf\n70.4K",
+            "檔案\nreport.pdf\n70.4K\n進度: 20%",
+            "檔案\n" + "x" * 256 + "\n70.4K",
+            "檔案\n" + "x" * 4096 + "\n70.4K",
+            "檔案\n\0report.pdf\n70.4K",
+        )
+        malformed += tuple(
+            f"檔案\nreport.pdf\n{size}"
+            for size in ("70.4M", "70.4k", "70.4KiB", "9TB", "9２B", "1 . 5 MB")
+        )
+        malformed += tuple(
+            f"檔案\n進度: {value}\nreport.pdf\n70.4K"
+            for value in ("１２%", "20", "-1%", "12.5%", "101%")
+        )
+        for body in malformed:
+            for footer in ("", "\n微信電腦版"):
+                with self.subTest(body=body, footer=footer):
+                    with self.assertRaises(AdapterError) as caught:
+                        parse_file_card(body + footer)
+                    self.assertEqual(caught.exception.code, "file_card_layout_unverified")
+
     def test_interrupted_zero_percent_maps_to_interrupted(self):
         self.assertEqual(
             parse_file_card("檔案\n進度: 0%\nreport.pdf\n92B\n傳送中斷\n微信电脑版"),
@@ -135,7 +231,6 @@ class FileCardParserTests(unittest.TestCase):
             "檔案\n\0report.pdf\n92B\n微信电脑版",
             "檔案\n\n92B\n微信电脑版",
             "檔案\nreport.pdf\n微信电脑版",
-            "檔案\nreport.pdf\n92B",
             "不是檔案\nreport.pdf\n92B\n微信电脑版",
             "檔案\n進度: 20%\n進度: 30%\nreport.pdf\n92B\n微信电脑版",
             "檔案\n進度: 20\nreport.pdf\n92B\n微信电脑版",

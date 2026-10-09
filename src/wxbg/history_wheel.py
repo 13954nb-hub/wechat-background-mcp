@@ -15,6 +15,7 @@ import win32process
 from wxbg.monitor import GUITHREADINFO
 from wxbg.observed_adapter import rectangle
 from wxbg.policy import AdapterError
+from wxbg.render_surface import enumerate_render_surfaces
 
 
 USER32 = ctypes.WinDLL('user32', use_last_error=True)
@@ -65,9 +66,7 @@ def _native_frame(adapter, expected=None):
         raise AdapterError('unverified_layout')
     point = ((view_rect[0] + view_rect[2]) // 2 - root_rect[0],
              (view_rect[1] + view_rect[3]) // 2 - root_rect[1])
-    renders = []
-    win32gui.EnumChildWindows(adapter.hwnd, lambda hwnd, _: renders.append(hwnd)
-        if win32gui.GetClassName(hwnd) == 'MMUIRenderSubWindowHW' else None, None)
+    renders = enumerate_render_surfaces(adapter.hwnd, win32gui)
     render_rect = tuple(win32gui.GetClientRect(renders[0])) if len(renders) == 1 else None
     if (len(renders) != 1 or win32process.GetWindowThreadProcessId(renders[0])[1] != pid
             or render_rect != (0, 0, root_rect[2] - root_rect[0], root_rect[3] - root_rect[1])

@@ -4,8 +4,8 @@
   "request_struct_size": 736,
   "architecture": "x86_64-windows",
   "binary": {
-    "path": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8/wxbg_attachment.dll",
-    "sha256": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8",
+    "path": "da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594/wxbg_attachment.dll",
+    "sha256": "da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594",
     "size_bytes": 523264
   },
   "client": {
@@ -24,8 +24,8 @@
   "files": {
     "attachment_bridge.cpp": {
       "category": "implementation",
-      "sha256": "ef7ce4f37f25c4e5dd2cea27cd1a30c4f8c8808dbdd2e2b6ef051b4c1df22376",
-      "size_bytes": 15397
+      "sha256": "e41f5654b5afe433f460d339338abe9cbeb65e24247acd6927f51c432743f6b0",
+      "size_bytes": 15492
     },
     "file_dialog_proxy.cpp": {
       "category": "implementation",
@@ -59,8 +59,8 @@
     },
     "attachment_bridge_test.cpp": {
       "category": "test",
-      "sha256": "e62c1c51f8417b957022e7ea504a7ce61da6baa1e62af66f4b0715af6988296b",
-      "size_bytes": 5108
+      "sha256": "1d72c826f7f4c896a7f1cc851693e02fc6f4c1d4acbf9789b9202e0f4e11d89f",
+      "size_bytes": 8495
     },
     "file_dialog_proxy_test.cpp": {
       "category": "test",
@@ -108,16 +108,19 @@
     ],
     "packaged_headers_hashed_at_packaging": true,
     "bit_identical_rebuild_not_assumed": true,
-    "entrypoint_sha256": "4a78079429466556c5285d6b428f8d76a28e3e996689f4e2fa9bde7e1b0dfbde"
+    "entrypoint_sha256": "570bbbb210ad5c7e5c77c25ea94c16b6d06ca730dbd64eca71fe6555105c535d"
   },
   "verified_scope": {
     "current_pinned_v4": {
-      "binary_sha256": "07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8",
+      "binary_sha256": "da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594",
       "compiler": "Zig 0.16.0",
       "compile_success": true,
-      "owned_bridge_lifecycle_passed": false,
+      "owned_bridge_lifecycle_checks": 71,
+      "owned_bridge_lifecycle_passed": true,
       "client_live_submission_verified": false,
-      "scope": "Static package integrity and compiler success only. No native lifecycle tests or live Weixin submission were run for v4. The controller measures the semantic attachment button; the bridge independently validates the current render-client geometry before posting."
+      "upload_completed_verified": false,
+      "remote_receipt_verified": false,
+      "scope": "Owned-process geometry and lifecycle checks only. Private earlier-client submission evidence is not distributed and does not establish live verification for the new release binary. Upload completion and remote receipt are not claimed."
     },
     "historical_v3": {
       "binary_sha256": "c8d533d12c6b6d677f6b6ca2b6c8e643f6e8662bad21ed5fd26afe567125c99a",
@@ -151,10 +154,10 @@
     "general_WeChat_feature_support"
   ],
   "limitations": [
-    "No complete or remote-delivered upload was established by the recorded live evidence.",
+    "Owned-process testing does not establish live client submission, upload completion or remote receipt for this release binary.",
     "The native DLL performs image size and code signature checks; the controller must independently enforce the exact client SHA-256.",
     "Restoring IAT state is not permission to unload the intentionally resident module.",
-    "Historical production build receipt and live submission apply to an earlier binary only. The v4 rebuilt binary has no live submission or remote receipt evidence.",
+    "Historical build and live-client evidence apply to earlier binaries and do not verify this release binary.",
     "The current Weixin process may still have an earlier DLL resident; a new path and manifest do not replace an already loaded module."
   ]
 }

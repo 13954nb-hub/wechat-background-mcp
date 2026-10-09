@@ -11,6 +11,8 @@ from pywinauto.uia_defines import IUIA
 from .monitor import visible_windows
 from .policy import AdapterError, exact_one, compare_draft, validate_text, validate_ui_action, stable_ref
 from .window_geometry import main_client_size_matches_or_minimized
+from .render_surface import enumerate_render_surfaces
+from .semantic_labels import SEND_LABELS, FILE_ATTACHMENT_LABELS
 
 
 _VOICE_INPUT_SUFFIX = ' 按住 Ctrl + Win 使用語音輸入文字'
@@ -125,8 +127,7 @@ class Adapter:
         root=self.root().rectangle();rect=node.rectangle()
         _control_point((root.left,root.top,root.right,root.bottom),
                        (rect.left,rect.top,rect.right,rect.bottom))
-        renders=[]
-        win32gui.EnumChildWindows(self.hwnd,lambda h,_:renders.append(h) if win32gui.GetClassName(h)=='MMUIRenderSubWindowHW' else None,None)
+        renders=enumerate_render_surfaces(self.hwnd,win32gui)
         render=exact_one(renders,'render_surface');client=win32gui.GetClientRect(render)
         if (win32process.GetWindowThreadProcessId(render)[1]!=self.pid
                 or tuple(client)!=(0,0,root.width(),root.height())
@@ -176,7 +177,7 @@ class Adapter:
         self.precondition()
         info=node.element_info
         if (info.control_type!='Button' or info.class_name!='mmui::XOutlineButton'
-                or info.name not in ('傳送','发送','發送','Send')):
+                or info.name not in SEND_LABELS):
             raise AdapterError('send_button_unverified')
         try:
             invoke=node.iface_invoke.Invoke
@@ -226,7 +227,7 @@ class Adapter:
         field=exact_one([n for n in nodes if n.element_info.automation_id=='chat_input_field'],'chat_input')
         buttons=[n for n in nodes if n.element_info.control_type=='Button'
                  and n.element_info.class_name=='mmui::XOutlineButton'
-                 and n.element_info.name in ('傳送','发送','發送','Send')]
+                 and n.element_info.name in SEND_LABELS]
         button=exact_one(buttons,'send_button') if require_button else (buttons[0] if len(buttons)==1 else None)
         selected_refs=self._selected_session_refs(sessions)
         return _SendSnapshot(
@@ -283,7 +284,7 @@ class Adapter:
         button=snapshot.button
         info=button.element_info
         if (info.control_type!='Button' or info.class_name!='mmui::XOutlineButton'
-                or info.name not in ('傳送','发送','發送','Send')):
+                or info.name not in SEND_LABELS):
             raise AdapterError('send_button_unverified')
         root_rect=_rectangle(self.root())
         button_rect=_rectangle(button)
@@ -292,7 +293,7 @@ class Adapter:
         def recheck():
             info=button.element_info
             if (info.control_type!='Button' or info.class_name!='mmui::XOutlineButton'
-                    or info.name not in ('傳送','发送','發送','Send')):
+                    or info.name not in SEND_LABELS):
                 raise AdapterError('send_button_unverified')
             if _rectangle(self.root())!=root_rect or _rectangle(button)!=button_rect:
                 raise AdapterError('unverified_layout')
@@ -539,9 +540,7 @@ class Adapter:
         left,top,right,bottom=root_rect
         if not 640<=right-left<=32767 or not 480<=bottom-top<=32767:
             raise AdapterError('unverified_layout')
-        renders=[]
-        win32gui.EnumChildWindows(self.hwnd,lambda h,_:renders.append(h)
-            if win32gui.GetClassName(h)=='MMUIRenderSubWindowHW' else None,None)
+        renders=enumerate_render_surfaces(self.hwnd,win32gui)
         render=exact_one(renders,'render_surface')
         client=tuple(win32gui.GetClientRect(render))
         if (win32process.GetWindowThreadProcessId(render)[1]!=self.pid
@@ -582,10 +581,10 @@ class Adapter:
                 'window_dpi':dpi,'coordinate_mapping_verified':True,
                 'send_button':observed(lambda n:n.element_info.control_type=='Button'
                     and n.element_info.class_name=='mmui::XOutlineButton'
-                    and n.element_info.name in ('傳送','发送','發送','Send'),send=True),
+                    and n.element_info.name in SEND_LABELS,send=True),
                 'attachment_button':observed(lambda n:n.element_info.control_type=='Button'
                     and n.element_info.class_name=='mmui::XButton'
-                    and n.element_info.name=='傳送檔案'),
+                    and n.element_info.name in FILE_ATTACHMENT_LABELS),
                 'session_table':observed(session_table)}
 
     def dispatch(self,action,args):

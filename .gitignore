@@ -23,6 +23,9 @@ native-src/build-verification*.json
 *acceptance*.md
 state/
 diagnostics/
+artifacts/
+delivery/
+release-assets/
 
 # Local acceptance harnesses are not part of the public distribution
 tools/

@@ -14,6 +14,7 @@ import time
 from wxbg.policy import AdapterError
 from .observed_adapter import observe, rectangle
 from .file_card_contract import parse_file_card
+from .semantic_labels import SEND_LABELS, FILE_ATTACHMENT_LABELS
 
 EMBEDDED_FILE = '\ufffc'
 POLL_ATTEMPTS = 8
@@ -56,10 +57,10 @@ def _file_layout(observation):
         raise AdapterError('unverified_layout')
     attachment = observation.one(lambda i: i.control_type == 'Button'
                                  and i.class_name == 'mmui::XButton'
-                                 and i.name == '傳送檔案', 'file_attachment')
+                                 and i.name in FILE_ATTACHMENT_LABELS, 'file_attachment')
     send = observation.one(lambda i: i.control_type == 'Button'
                            and i.class_name == 'mmui::XOutlineButton'
-                           and i.name == '傳送', 'send_button')
+                           and i.name in SEND_LABELS, 'send_button')
     attachment_rect, send_rect = rectangle(attachment), rectangle(send)
     if (len(attachment_rect) != 4 or len(send_rect) != 4
             or any(type(value) is not int for value in (*attachment_rect, *send_rect))):
@@ -184,7 +185,7 @@ def send_file(adapter, native_driver, session_ref, fixture):
 
         presend = current_observation()
         button = presend.one(lambda i: i.control_type == 'Button'
-                             and i.class_name == 'mmui::XOutlineButton' and i.name == '傳送', 'send_button')
+                             and i.class_name == 'mmui::XOutlineButton' and i.name in SEND_LABELS, 'send_button')
         if _file_layout(presend) != layout or rectangle(button) != layout[1]:
             raise AdapterError('unverified_layout')
         root_left, root_top, _, _ = rectangle(presend.adapter.root())
@@ -196,7 +197,7 @@ def send_file(adapter, native_driver, session_ref, fixture):
             phase['local_card_observed'] = True
             raise AdapterError('possible_native_autotransmit')
         info = button.element_info
-        if info.control_type != 'Button' or info.class_name != 'mmui::XOutlineButton' or info.name != '傳送':
+        if info.control_type != 'Button' or info.class_name != 'mmui::XOutlineButton' or info.name not in SEND_LABELS:
             raise AdapterError('send_button_changed')
         if presend.recheck() != EMBEDDED_FILE:
             raise AdapterError('attachment_draft_conflict')

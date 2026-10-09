@@ -4,11 +4,11 @@
 
 ## English
 
-### 2.5.2 tool catalog
+### 2.6.0 tool catalog
 
 The server registers 29 tools and 3 prompts. A catalog entry or passing automated test does not mean the tool was exercised against live private data.
 
-| # | Tool | Purpose | 2.5.2 verification |
+| # | Tool | Purpose | 2.6.0 verification |
 | ---: | --- | --- | --- |
 | 1 | wechat_batch_read_messages | Read a bounded page from 1–16 selected conversations using retained cursors. | Source and clean-wheel suites; no live private read. |
 | 2 | wechat_capabilities | Report package/client versions, tool catalog, capabilities, and limits. | Safe live metadata probe passed. |
@@ -58,11 +58,11 @@ Database sender identity is trusted only when the shard-local sender ID maps to 
 
 ## 简体中文
 
-### 2.5.2 工具目录
+### 2.6.0 工具目录
 
 服务登记 29 个工具和 3 个提示词。工具出现在目录中或自动化测试通过，不代表已对真实私人数据实机操作。
 
-| 序号 | 工具 | 用途 | 2.5.2 验证情况 |
+| 序号 | 工具 | 用途 | 2.6.0 验证情况 |
 | ---: | --- | --- | --- |
 | 1 | wechat_batch_read_messages | 使用保留游标，有界读取 1–16 个所选会话。 | 源码与干净 wheel 测试通过；未实读私人消息。 |
 | 2 | wechat_capabilities | 报告程序／微信版本、工具目录、能力和限制。 | 安全的实时元数据探测通过。 |

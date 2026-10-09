@@ -8,6 +8,7 @@ import win32process
 
 from .observed_adapter import rectangle
 from .policy import AdapterError
+from .render_surface import enumerate_render_surfaces
 from .monitor import GUITHREADINFO
 
 USER32 = ctypes.WinDLL('user32', use_last_error=True)
@@ -75,9 +76,7 @@ def send_contact_wheel(adapter, table, delta):
             or not (root_rect[0] < table_rect[0] < table_rect[2] <= root_rect[2]
                     and root_rect[1] <= table_rect[1] < table_rect[3] <= root_rect[3])):
         raise AdapterError('contacts_page_changed')
-    renders = []
-    win32gui.EnumChildWindows(adapter.hwnd, lambda h, _: renders.append(h)
-        if win32gui.GetClassName(h) == 'MMUIRenderSubWindowHW' else None, None)
+    renders = enumerate_render_surfaces(adapter.hwnd, win32gui)
     if (len(renders) != 1 or win32process.GetWindowThreadProcessId(renders[0])[1] != pid
             or tuple(win32gui.GetClientRect(renders[0])) != render_rect
             or win32gui.ClientToScreen(adapter.hwnd, (0, 0))

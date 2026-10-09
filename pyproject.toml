@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wechat-background-mcp"
-version = "2.5.2"
+version = "2.6.0"
 readme = "README.md"
 license = "Apache-2.0"
 description = "Version-pinned background MCP adapter for an existing Windows Weixin client"
@@ -39,4 +39,4 @@ include-package-data = false
 license-files = ["LICENSE", "NOTICE", "licenses/*.txt", "THIRD_PARTY_READSTORE.md"]
 
 [tool.setuptools.package-data]
-wxbg = ["FIRST_USE_ZH.md", "native/07f53d6c428eab457438a49909518101cf81d79f03c58faa403303ca68f996c8/wxbg_attachment.dll", "native/manifest.json"]
+wxbg = ["FIRST_USE_ZH.md", "native/da922434618ae61efbd7eeaf43f277e1cded870d5a3b3e153629b29e75413594/wxbg_attachment.dll", "native/manifest.json"]

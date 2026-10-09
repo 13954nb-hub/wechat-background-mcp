@@ -31,6 +31,8 @@ _SAFE_FILE_CARD_ERRORS = frozenset(
 
 _MAX_CARD_TEXT = 4096
 _MAX_LINE_LENGTH = 255
+_FILE_LABELS = frozenset(("檔案", "文件"))
+_FOOTER_LABELS = frozenset(("微信电脑版", "微信電腦版"))
 _REF_RE = re.compile(r"[0-9a-f]{32}\Z")
 _PROGRESS_RE = re.compile(r"(?:进度|進度)[ \t]*:[ \t]*([0-9]{1,3})[ \t]*%\Z")
 _MALFORMED_PROGRESS_RE = re.compile(
@@ -146,13 +148,14 @@ def _normalise_card_lines(text):
     normalised = text.replace("\r\n", "\n").replace("\r", "\n")
     lines = normalised.split("\n")
     if (
-        len(lines) < 4
-        or lines[0] != "檔案"
-        or lines[-1] != "微信电脑版"
+        len(lines) < 3
+        or lines[0] not in _FILE_LABELS
         or any(len(line) > _MAX_LINE_LENGTH for line in lines)
-        or any(not line for line in lines[1:-1])
+        or any(not line for line in lines[1:])
     ):
         _layout_error()
+    if lines[-1] in _FOOTER_LABELS:
+        lines = lines[:-1]
     return lines
 
 
@@ -160,7 +163,7 @@ def parse_file_card(text: str) -> dict:
     """Parse the bounded local card grammar into an internal exact shape."""
 
     lines = _normalise_card_lines(text)
-    body_end = len(lines) - 1
+    body_end = len(lines)
 
     progress_value = None
     cursor = 1

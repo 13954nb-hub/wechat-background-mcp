@@ -4,17 +4,17 @@
 
 **简体中文**
 
-这是一个非官方、实验性的 Windows 本地 MCP 服务，连接用户已登录的微信桌面端。**2.5.2** 面向 Windows x64、CPython 3.12 x64 和经过完整指纹核验的微信 Windows **4.1.13.12 x64**，提供 29 个工具和 3 个 MCP 提示词。分辨率没有固定要求：界面操作会在每次调用时重新测量窗口、DPI、渲染区和目标控件；证据不足时停止。
+这是一个非官方、实验性的 Windows 本地 MCP 服务，连接用户已登录的微信桌面端。**2.6.0** 面向 Windows x64、CPython 3.12 x64 和经过完整指纹核验的微信 Windows **4.1.13.12 x64**，提供 29 个工具和 3 个 MCP 提示词。分辨率没有固定要求：界面操作会在每次调用时重新测量窗口、DPI、渲染区和目标控件；证据不足时停止。
 
-[下载 2.5.2 安装包（Windows x64 wheel）](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.5.2/wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl) · SHA-256：**95df0b182ba67f85664a592acba70a1c6c920e56f8b86cb9466759b4ee278cd7**
+[下载 2.6.0 安装包（Windows x64 wheel）](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.6.0/wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl) · SHA-256：[发行页校验文件](https://github.com/13954nb-hub/wechat-background-mcp/releases/tag/v2.6.0)
 
 微信安装程序不随项目发布。请查看[官方 Windows 下载页](https://pc.weixin.qq.com/)及[安装与版本核验说明](docs/zh-CN/快速开始.md#微信客户端版本与下载)。官方安装链接可能更新到不兼容版本；不要仅凭文件名判断，也不要绕过版本校验。
 
 **English**
 
-This is an unofficial, experimental local MCP server for an already logged-in Windows Weixin client. **Version 2.5.2** targets Windows x64, CPython 3.12 x64, and the exact fingerprint-verified Weixin for Windows **4.1.13.12 x64**. It exposes 29 tools and 3 MCP prompts. There is no fixed monitor-resolution requirement: every UI action remeasures the window, DPI, render area, and target control, and stops when evidence is insufficient.
+This is an unofficial, experimental local MCP server for an already logged-in Windows Weixin client. **Version 2.6.0** targets Windows x64, CPython 3.12 x64, and the exact fingerprint-verified Weixin for Windows **4.1.13.12 x64**. It exposes 29 tools and 3 MCP prompts. There is no fixed monitor-resolution requirement: every UI action remeasures the window, DPI, render area, and target control, and stops when evidence is insufficient.
 
-[Download the 2.5.2 Windows x64 wheel](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.5.2/wechat_background_mcp-2.5.2-cp312-cp312-win_amd64.whl) · SHA-256: **95df0b182ba67f85664a592acba70a1c6c920e56f8b86cb9466759b4ee278cd7**
+[Download the 2.6.0 Windows x64 wheel](https://github.com/13954nb-hub/wechat-background-mcp/releases/download/v2.6.0/wechat_background_mcp-2.6.0-cp312-cp312-win_amd64.whl) · SHA-256: [release checksums](https://github.com/13954nb-hub/wechat-background-mcp/releases/tag/v2.6.0)
 
 The Weixin installer is not bundled. See the [official Windows download page](https://pc.weixin.qq.com/) and the [version and integrity notes](docs/en/GETTING_STARTED.md#weixin-client-version-and-download). Official download URLs can move to an incompatible build; do not rely on the filename or bypass the version check.
 
@@ -29,7 +29,7 @@ The Weixin installer is not bundled. See the [official Windows download page](ht
 - [Capabilities and limitations](CAPABILITIES.md)
 - [Security and data handling](SECURITY.md)
 - [Disclaimer / 免责声明](DISCLAIMER.md)
-- [Release notes](RELEASE_NOTES_2.5.2.md)
+- [Release notes](RELEASE_NOTES_2.6.0.md)
 
 **简体中文功能概览：** 有界会话／消息读取与搜索、发话者方向证据、最多 16 个会话的客户端轮询、受控文字与附件提交、图片／文件查看交接。监听由 MCP 客户端分段调用，默认间隔 5 秒、单次最多 60 秒；服务端没有常驻监听或自行生成并发送回复的 daemon。
 
@@ -39,7 +39,7 @@ The Python package is licensed under [Apache-2.0](LICENSE). This project is not 
 
 ---
 
-An **unofficial, experimental** local MCP server for a logged-in Windows Weixin desktop client. Version **2.5.2** exposes 29 tools for bounded conversation and message reads, selected-chat polling, search, and guarded local submission, plus hybrid MCP and Computer Use prompts. It is not affiliated with Tencent or OpenAI.
+An **unofficial, experimental** local MCP server for a logged-in Windows Weixin desktop client. Version **2.6.0** exposes 29 tools for bounded conversation and message reads, selected-chat polling, search, and guarded local submission, plus hybrid MCP and Computer Use prompts. It is not affiliated with Tencent or OpenAI.
 
 The single installable wheel contains the mandatory [Chinese first-use guide](src/wxbg/FIRST_USE_ZH.md) at `wxbg/FIRST_USE_ZH.md`. An AI installer can read it inside the wheel ZIP before installation; after connection, the `wechat_first_deploy_and_tool_chains` prompt returns its text. The [AI deployment notes](INSTALL_FOR_AGENTS.md) and [bilingual 29-tool workflow guide](docs/TOOLS_AND_WORKFLOWS.md) give source readers the same route.
 
@@ -51,7 +51,7 @@ The integration reads the local Weixin process and, during guarded operations, w
 
 ## Install with an AI assistant
 
-Give the assistant a trusted local **2.5.2 wheel** and have it read `wxbg/FIRST_USE_ZH.md` inside that wheel. Do not assume a repository URL is available or current. The assistant must resolve the customer's own absolute paths, install into a CPython 3.12 x64 virtual environment, run `wechat-mcp-configure --list-running` and `--weixin-exe`, back up and edit only the requested MCP client entry, then restart the client and call `wechat_capabilities` and `wechat_status` for first-use calibration. Status does not navigate, send, or edit drafts, but it may briefly lease and restore the version-pinned in-process access gate; require `cleanup.restored=true`.
+Give the assistant a trusted local **2.6.0 wheel** and have it read `wxbg/FIRST_USE_ZH.md` inside that wheel. Do not assume a repository URL is available or current. The assistant must resolve the customer's own absolute paths, install into a CPython 3.12 x64 virtual environment, run `wechat-mcp-configure --list-running` and `--weixin-exe`, back up and edit only the requested MCP client entry, then restart the client and call `wechat_capabilities` and `wechat_status` for first-use calibration. Status does not navigate, send, or edit drafts, but it may briefly lease and restore the version-pinned in-process access gate; require `cleanup.restored=true`.
 
 Keep the state directory stable across restarts and outside the source tree. The server's main Weixin window must be logged in, minimized, without an interfering popup, and discoverable from the **same interactive Windows desktop** as the MCP process. `wechat_status.layout_calibration` observes this machine's current window and controls; every geometry-dependent UI action remeasures its own target and fails closed when evidence is insufficient. Monitor resolution alone does not establish a safe coordinate. Never retry `outcome_unknown` automatically.
 

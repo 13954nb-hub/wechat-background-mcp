@@ -5,3 +5,5 @@
 *.cpp text eol=lf
 *.h text eol=lf
 *.dll binary
+.gitignore text eol=lf
+.gitattributes text eol=lf

@@ -180,6 +180,46 @@ class FileCardTests(unittest.TestCase):
         self.assertEqual(self.adapter.ref(self.adapter.session), SESSION_REF)
         self.assertEqual(self.adapter.ref(self.adapter.card, self.adapter.title), MESSAGE_REF)
 
+    def test_three_line_card_reads_two_matching_observations_without_private_metadata(self):
+        name = "檔案\nreport.pdf\n70.4K"
+        self.adapter.card.element_info.name = name
+        message_ref = card_ref(name)
+        self.adapter.text = "existing private draft"
+
+        result = self.read(message_ref=message_ref)
+
+        self.assertEqual(self.adapter.nodes_calls, 2)
+        self.assertEqual(self.adapter.forbidden_calls, [])
+        self.assertEqual(result["counts"], {"observations": 2})
+        self.assertEqual(result["refs"], {"conversation": SESSION_REF, "message": message_ref})
+        self.assertEqual(result["display_size"], "70.4K")
+        self.assertEqual(result["transfer_indicator"], "no_transfer_indicator")
+        self.assertEqual(result["upload_status"], "unknown")
+        self.assertIsNone(result["progress_percent"])
+        self.assertIs(result["remote_receipt_verified"], False)
+        self.assertIs(result["stable_message_id"], False)
+        self.assertTrue(contract.valid_file_card_result(result, SESSION_REF, message_ref))
+        self.assertEqual(self.adapter.text, "existing private draft")
+        encoded = json.dumps(result, ensure_ascii=False)
+        for private in ("filename", "report.pdf", name, "existing private draft"):
+            self.assertNotIn(private, encoded)
+
+    def test_footer_change_does_not_relax_exact_card_identity(self):
+        name = "檔案\nreport.pdf\n70.4K"
+        self.adapter.card.element_info.name = name
+
+        def add_footer(adapter, call):
+            if call == 2:
+                adapter.card.element_info.name = name + "\n微信電腦版"
+
+        self.adapter.on_nodes = add_footer
+        with self.assertRaises(AdapterError) as caught:
+            self.read(message_ref=card_ref(name))
+
+        self.assertEqual(caught.exception.code, "file_card_changed")
+        self.assertEqual(self.adapter.nodes_calls, 2)
+        self.assertEqual(self.adapter.forbidden_calls, [])
+
     def test_precondition_immediately_precedes_each_fresh_tree_walk(self):
         self.read()
 
